@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 
 const Homepage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -41,36 +42,46 @@ const Homepage = () => {
         <nav className="nav">
           <div className="logo">A27 E-Shop</div>
           <div className="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Products</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            <Link to="/">Home</Link>
+            <Link to="/products">Products</Link>
+            <Link to="/about">About</Link>
+            <Link to="/contact">Contact</Link>
           </div>
           <div className="cart">Cart ({cartItems.length})</div>
         </nav>
       </header>
 
-      {/* Hero Section */}
-      <section className="hero">
-        <h1>Welcome to A27 E-Shop</h1>
-        <p>Discover amazing products at great prices</p>
-      </section>
+      {/* Router Outlet */}
+      <Outlet />
 
-      {/* Featured Products */}
-      <section className="featured-products">
-        <h2>Featured Products</h2>
-        <div className="product-grid">
-          {featuredProducts.map((product) => (
-            <div key={product.id} className="product-card">
-              <img src={product.image} alt={product.name} />
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <p className="price">${product.price}</p>
-              <button onClick={() => addToCart(product)}>Add to Cart</button>
+      {/* Only show these sections on the home route */}
+      {window.location.pathname === "/" && (
+        <>
+          {/* Hero Section */}
+          <section className="hero">
+            <h1>Welcome to A27 E-Shop</h1>
+            <p>Discover amazing products at great prices</p>
+          </section>
+
+          {/* Featured Products */}
+          <section className="featured-products">
+            <h2>Featured Products</h2>
+            <div className="product-grid">
+              {featuredProducts.map((product) => (
+                <div key={product.id} className="product-card">
+                  <img src={product.image} alt={product.name} />
+                  <h3>{product.name}</h3>
+                  <p>{product.description}</p>
+                  <p className="price">${product.price}</p>
+                  <button onClick={() => addToCart(product)}>
+                    Add to Cart
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
+        </>
+      )}
 
       {/* Footer */}
       <footer className="footer">
@@ -104,6 +115,11 @@ const Homepage = () => {
           margin: 0 15px;
           text-decoration: none;
           color: #333;
+          transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+          color: #2ecc71;
         }
 
         .hero {
